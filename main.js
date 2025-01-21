@@ -48,9 +48,23 @@ ipcMain.on("openTheContinousFileDialogFOrRFIFRONTSHEETs", async (event, args) =>
 
       ArrayOFRFIFrontSheetALLFIlePaths.push(...result.filePaths);
       ArrayOFRFIFrontSheetALLFIlePaths = Array.from(new Set(ArrayOFRFIFrontSheetALLFIlePaths));
-      ArrayOFRFIFrontSheetALLFIlePaths=  ArrayOFRFIFrontSheetALLFIlePaths.filter(singleval=>isNaN(singleval))
-       
    
+      
+      let spaceholderappry = []
+      ArrayOFRFIFrontSheetALLFIlePaths.forEach(element => {
+        console.log(path.parse(element).name);
+        console.log(typeof(parseInt(path.parse(element).name), 10))
+
+         if(!isNaN(path.parse(element).name)){
+          spaceholderappry.push(element)
+         }
+      });
+      
+    
+    console.log("llllllllllllllllllllllllllllllllllllllllll");
+      console.log(spaceholderappry);
+
+      ArrayOFRFIFrontSheetALLFIlePaths = spaceholderappry
 
 let bufferArr =[]
 
@@ -59,6 +73,7 @@ let bufferArr =[]
         for (let i = 0; i < ArrayOFRFIFrontSheetALLFIlePaths.length; i++) {
           let dirname = path.parse(ArrayOFRFIFrontSheetALLFIlePaths[i]).dir
           let name = path.parse(ArrayOFRFIFrontSheetALLFIlePaths[i]).name
+          console.log({name});
         
          const existingPdfBytes = await fs.readFileSync( ArrayOFRFIFrontSheetALLFIlePaths[i])
           const pdfDoc = await PDFDocument.load(existingPdfBytes)
