@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron/main')
+const { app, BrowserWindow, ipcMain,shell } = require('electron/main')
 const path = require('node:path')
 
 const os = require("os");
@@ -12,6 +12,7 @@ const { unlink } = require('node:fs/promises');
 let win
 
 let ArrayOFRFIFrontSheetALLFIlePaths = []
+let dirname
 
 let promisesHTMLArray = []
 
@@ -71,16 +72,19 @@ let bufferArr =[]
       async function forReturnng(){
 
         for (let i = 0; i < ArrayOFRFIFrontSheetALLFIlePaths.length; i++) {
-          let dirname = path.parse(ArrayOFRFIFrontSheetALLFIlePaths[i]).dir
+           dirname = path.parse(ArrayOFRFIFrontSheetALLFIlePaths[i]).dir
           let name = path.parse(ArrayOFRFIFrontSheetALLFIlePaths[i]).name
           console.log({name});
         
          const existingPdfBytes = await fs.readFileSync( ArrayOFRFIFrontSheetALLFIlePaths[i])
           const pdfDoc = await PDFDocument.load(existingPdfBytes)
          const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
+         
          const pages = pdfDoc.getPages()
+         const lastpage = pages.length-1
+         pdfDoc.removePage(lastpage)
          const firstPage = pages[0]
-         const { width, height } = firstPage.getSize()
+        //  const { width, height } = firstPage.getSize()
          firstPage.drawText("QMIS NO :"+name, {
            x: 300,
            y:  670,
@@ -159,6 +163,7 @@ console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
       
   //     console.log("sssssssssssssssssssssssssssssssssssssss");
   // delayforTaggingPDF()
+  shell.openPath(dirname)
 return promise1
   
 
@@ -905,7 +910,7 @@ fs.writeFile( direcmaster+"//"+"FINAL"+'--output.pdf', await mergedPdf.save(),(e
    
 
                 
-
+     
 
 
         
