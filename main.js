@@ -81,8 +81,11 @@ let bufferArr =[]
          const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
          
          const pages = pdfDoc.getPages()
-         const lastpage = pages.length-1
-         pdfDoc.removePage(lastpage)
+         if (pages.length>1) {
+          const lastpage = pages.length-1
+          pdfDoc.removePage(lastpage)
+         }
+      
          const firstPage = pages[0]
         //  const { width, height } = firstPage.getSize()
          firstPage.drawText("QMIS NO :"+name, {
